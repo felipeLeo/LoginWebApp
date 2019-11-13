@@ -5,8 +5,11 @@
  */
 package in.edu.dmodi.loginwebapp.servlets;
 
+import in.edu.dmodi.loginwebapp.util.Credential;
+import in.edu.dmodi.loginwebapp.util.CredentialStore;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -27,9 +30,12 @@ public class ListerServlet extends HttpServlet {
         try {
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
-            
-            // Recuperação dos usuários
-            out.print("<b>Listagem de Usuário não Implementada!</b>");
+        
+            Set<Credential> users = CredentialStore.getUsers();
+            out.print("<table border=1 cellSpacing=0 cellPadding=4>");
+            out.print("<tr><th>Nome</th><th>e-mail</th>");
+            users.forEach(u -> out.print("<tr><td>" + u.getFirstName()+ "</td><td>" + u.getEmail()+ "</td></tr>"));
+            out.print("</table>");
             
             RequestDispatcher rd = request.getRequestDispatcher("welcome.jsp");
             rd.include(request, response);
